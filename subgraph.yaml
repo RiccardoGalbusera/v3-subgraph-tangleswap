@@ -1,8 +1,5 @@
-specVersion: 0.0.2
+specVersion: 0.0.3
 description: Uniswap is a decentralized protocol for automated token exchange on Ethereum.
-# graft:
-#   base: QmdDnZ9ts3XDFSaxEu1UcBk6Fh47XbEu3DuqAffeJGYuCN
-#   block: 808482
 repository: https://github.com/Uniswap/uniswap-v3-subgraph
 schema:
   file: ./schema.graphql
@@ -11,11 +8,11 @@ features:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: arbitrum-one
+    network: shimmer
     source:
-      address: '0x1F98431c8aD98523631AE4a59f267346ea31F984'
+      address: "0xdf7bA717FB0D5ce579252f05167cD96d0fA77bCb"
       abi: Factory
-      startBlock: 175
+      startBlock: 35196
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -40,11 +37,11 @@ dataSources:
           handler: handlePoolCreated
   - kind: ethereum/contract
     name: NonfungiblePositionManager
-    network: arbitrum-one
+    network: shimmer
     source:
-      address: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
+      address: "0xbDdbea66383f6A8879701d22B8b45F887123736A"
       abi: NonfungiblePositionManager
-      startBlock: 175
+      startBlock: 35196
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -74,7 +71,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pool
-    network: arbitrum-one
+    network: shimmer
     source:
       abi: Pool
     mapping:

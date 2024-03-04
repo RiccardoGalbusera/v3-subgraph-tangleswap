@@ -4,13 +4,30 @@ import { Bundle, Pool, Token } from './../types/schema'
 import { BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 import { exponentToBigDecimal, safeDiv } from '../utils/index'
 
-const WETH_ADDRESS = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
-const USDC_WETH_03_POOL = '0x17c14d2c404d167802b16c450d3c99f88f2c4f4d'
+const SMR_ADDRESS = '0x1074010000000000000000000000000000000000'
+const USDT_SMR_03_POOL = '0xA0E105b9300Cfa9564126A705d6E5Bc9E05DE618'
 
 // token where amounts should contribute to tracked volume and liquidity
 // usually tokens that many tokens are paired with s
 export let WHITELIST_TOKENS: string[] = [
-  WETH_ADDRESS // WETH
+  SMR_ADDRESS, // SMR
+  '0xa4f8C7C1018b9dD3be5835bF00f335D9910aF6Bd', // USDT
+  '0xeCE555d37C37D55a6341b80cF35ef3BC57401d1A', // USDC
+  '0x4638C9fb4eFFe36C49d8931BB713126063BF38f9', // WETH
+  '0xb0119035d08CB5f467F9ed8Eae4E5f9626Aa7402', // WBTC
+  '0xE6373A7Bb9B5a3e71D1761a6Cb4992AD8537Bf28', // WMATIC
+  '0xEAf8553fD72417C994525178fC917882d5AEc725', // WAVAX
+  '0x8C96Dd1A8B1952Ce6F3a582170bb173eD591D40D', // WFTM
+  '0x2A6F394085B8E33fbD9dcFc776BCE4ed95F1900D', // WBNB
+  '0x4794Aeafa5Efe2fC1F6f5eb745798aaF39A81D3e', // LUM
+  '0x5dA63f4456A56a0c5Cb0B2104a3610D5CA3d48E8', // sIOTA
+  '0x326f23422CE22Ee5fBb5F37f9fa1092d095546F8', // DEEPR
+  '0xE5f3dCC241Dd008E3c308e57cf4F7880eA9210F8', // VOID
+  '0x8E9b86C02F54d4D909e25134ce45bdf2B6597306', // FUSE
+  '0x264F2e6142CE8bEA68e5C646f8C07db98A9E003A', // APEin
+  '0x3C844FB5AD27A078d945dDDA8076A4084A76E513', // SSOON
+  '0xbD17705cA627EFBB55dE22A0F966Af79E9191c89', // RUST
+  '0x83b090759017EFC9cB4d9E45B813f5D5CbBFeb95' // FUEL
 ]
 
 let MINIMUM_ETH_LOCKED = BigDecimal.fromString('4')
@@ -32,11 +49,11 @@ export function sqrtPriceX96ToTokenPrices(sqrtPriceX96: BigInt, token0: Token, t
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let usdcPool = Pool.load(USDC_WETH_03_POOL) // usdc is token1
+  let usdtPool = Pool.load(USDT_SMR_03_POOL) // usdt is token1
 
   // need to only count ETH as having valid USD price if lots of ETH in pool
-  if (usdcPool !== null && usdcPool.totalValueLockedToken0.gt(MINIMUM_ETH_LOCKED)) {
-    return usdcPool.token1Price
+  if (usdtPool !== null && usdtPool.totalValueLockedToken0.gt(MINIMUM_ETH_LOCKED)) {
+    return usdtPool.token1Price
   } else {
     return ZERO_BD
   }
@@ -47,7 +64,7 @@ export function getEthPriceInUSD(): BigDecimal {
  * @todo update to be derived ETH (add stablecoin estimates)
  **/
 export function findEthPerToken(token: Token): BigDecimal {
-  if (token.id == WETH_ADDRESS) {
+  if (token.id == SMR_ADDRESS) {
     return ONE_BD
   }
   let whiteList = token.whitelistPools

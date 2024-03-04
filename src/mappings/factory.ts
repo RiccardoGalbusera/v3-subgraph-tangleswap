@@ -1,6 +1,6 @@
 import { WHITELIST_TOKENS } from './../utils/pricing'
 /* eslint-disable prefer-const */
-import { FACTORY_ADDRESS, ZERO_BI, ONE_BI, ZERO_BD, ADDRESS_ZERO } from './../utils/constants'
+import { FACTORY_ADDRESS, ZERO_BI, ONE_BI, ZERO_BD, ADDRESS_ZERO, POOL_ADDRESSES } from './../utils/constants'
 import { Factory } from '../types/schema'
 import { PoolCreated } from '../types/Factory/Factory'
 import { Pool, Token, Bundle } from '../types/schema'
@@ -76,6 +76,7 @@ export function handlePoolCreated(event: PoolCreated): void {
     token1.symbol = fetchTokenSymbol(event.params.token1)
     token1.name = fetchTokenName(event.params.token1)
     token1.totalSupply = fetchTokenTotalSupply(event.params.token1)
+
     let decimals = fetchTokenDecimals(event.params.token1)
     // bail if we couldn't figure out the decimals
     if (decimals === null) {
@@ -138,8 +139,10 @@ export function handlePoolCreated(event: PoolCreated): void {
   pool.collectedFeesUSD = ZERO_BD
 
   pool.save()
+
   // create the tracked contract based on the template
   PoolTemplate.create(event.params.pool)
+
   token0.save()
   token1.save()
   factory.save()
