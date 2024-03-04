@@ -223,6 +223,8 @@ type Position @entity {
   collectedFeesToken0: BigDecimal!
   # all time collected fees in token1
   collectedFeesToken1: BigDecimal!
+  # usd value of the position
+  valueUSD: BigDecimal!
   # tx in which the position was initialized
   transaction: Transaction!
   # vars needed for fee computation
@@ -257,6 +259,8 @@ type PositionSnapshot @entity {
   collectedFeesToken0: BigDecimal!
   # all time collected fees in token1
   collectedFeesToken1: BigDecimal!
+  # usd value of the position
+  valueUSD: BigDecimal!
   # tx in which the snapshot was initialized
   transaction: Transaction!
   # internal vars needed for fee computation
